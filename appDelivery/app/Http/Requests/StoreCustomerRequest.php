@@ -13,7 +13,7 @@ class StoreCustomerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        //look at
         return true;
     }
 

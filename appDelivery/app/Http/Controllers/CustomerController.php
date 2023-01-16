@@ -12,20 +12,12 @@ class CustomerController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * All registers
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $customers = Customer::all();
+        return $customers;
     }
 
     /**
@@ -36,7 +28,8 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        $customer = Customer::create($request->all());
+       return $customer;
     }
 
     /**
@@ -47,19 +40,9 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        //
+        return $customer;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -70,7 +53,8 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        //
+        $customer ->update($request->all());
+        return $customer;
     }
 
     /**
@@ -81,6 +65,7 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+        return ['msg'=>'successfully deleted record'];
     }
 }
