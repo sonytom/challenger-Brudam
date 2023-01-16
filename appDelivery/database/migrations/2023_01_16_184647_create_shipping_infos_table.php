@@ -15,7 +15,17 @@ return new class extends Migration
     {
         Schema::create('shipping_infos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('order_id');
+            $table->dateTime('dateStart');
+            $table->dateTime('dateDelivery');
+            $table->float('deliveryCost', 8,2);
+            $table->integer('stageDelivery');
             $table->timestamps();
+    
+            //foreign key (constraints)
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

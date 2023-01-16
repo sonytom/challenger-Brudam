@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 30)->unique();
+            $table->string('image', 100)->comment('profile picture');
+            $table->string('address', 100)->comment('address');
             $table->timestamps();
         });
     }

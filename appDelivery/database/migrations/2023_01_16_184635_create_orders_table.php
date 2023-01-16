@@ -15,7 +15,16 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customers_id');
+            $table->string('dateDelivery', 30);
+            $table->string('imagem', 100);
+            $table->integer('taxSend');
+            $table->integer('fragile');
             $table->timestamps();
+    
+            //foreign key (constraints)
+            
+            $table->foreign('customers_id')->references('id')->on('customers');
         });
     }
 
