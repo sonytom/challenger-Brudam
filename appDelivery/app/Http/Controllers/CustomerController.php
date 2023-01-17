@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storages;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
 {
+    protected $customer;
+    // TypeHitting Objeto
+    //injeção
+    public function __construct(Customer $customer)
+    {
+        $this->customer = $customer;
+    }
     /**
      * Display a listing of the resource.
      *
