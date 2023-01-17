@@ -117,12 +117,19 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\id $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Customer $customer)
+    public function destroy($id)
     {
+        $customer = $this->customer->find($id);
+        if ($customer === null) {
+            return response()->json(['erro' => 'Não existe'], 404);
+        }
+
+        Storage::disk('public')->delete($customer->image);
+
         $customer->delete();
-        return ['msg'=>'successfully deleted record'];
+        return response()->json(['msg' => 'successfully deleted record'], 200);
     }
 }
