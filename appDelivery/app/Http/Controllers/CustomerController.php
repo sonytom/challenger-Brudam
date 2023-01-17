@@ -72,13 +72,46 @@ class CustomerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCustomerRequest  $request
-     * @param  \App\Models\Customer  $customer
+     * @param  \App\Models\id  $ID
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomerRequest $request, Customer $customer)
+    public function update(UpdateCustomerRequest $request, $id)
     {
-        $customer ->update($request->all());
-        return $customer;
+        $customer = $this->customer->find($id);
+
+        if ($customer === null) {
+            return response()->json(['erro' => 'Não existe'], 404);
+        }
+
+        if (request()->method() === 'PATCH') {
+            $rulesDynamics = array();
+
+            foreach ($customer->rules($id) as $input => $rule) {
+
+                if (array_key_exists($input, $request->all())) {
+                    $rulesDynamics[$input] = $rule;
+                }
+            }
+            $request->validate($rulesDynamics, $this->customer->feedback());
+        } else {
+            $request->validate($this->customer->rules($id), $this->customer->feedback());
+        }
+
+        //remove arquivo antigo caso um novo seja upado
+        if ($request->file('image')) {
+            Storage::disk('public')->delete($customer->image);
+        }
+
+        $image = $request->file('image');
+        $imgName = $image->store('path', 'public');
+
+        $customer->update([
+            'name' => $request->name,
+            'image' => $imgName,
+            'address' => $request->address
+        ]);
+
+        return response()->json($customer, 200);
     }
 
     /**
