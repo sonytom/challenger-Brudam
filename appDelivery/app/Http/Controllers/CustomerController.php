@@ -37,19 +37,34 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        $customer = Customer::create($request->all());
-       return $customer;
+        $request->validate($this->customer->rules(null), $this->customer->feedback());
+
+        //php artisan storage:link.
+        $image = $request->file('image');
+        $imgName = $image->store('path', 'public');
+
+        $customer = $this->customer->create([
+            'name' => $request->name,
+            'image' => $imgName,
+            'address' => $request->address
+        ]);
+
+        return response()->json($customer, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Customer  $customer
+     * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show($id)
     {
-        return $customer;
+        $customer = $this->customer->find($id);
+        if ($customer === null) {
+            return response()->json(['erro' => 'Não existe'], 404);
+        }
+        return response()->json($customer, 200);
     }
 
 
