@@ -25,8 +25,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all();
-        return $customers;
+        $customers = $this->customer->all();
+        return response()->json($customers, 200);
     }
 
     /**
