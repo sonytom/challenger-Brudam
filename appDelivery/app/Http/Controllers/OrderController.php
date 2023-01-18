@@ -25,17 +25,33 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $order = array();
+        $orders = array();
+
+        if ($request->has('attributesCustomer')) {
+            $attributesCustomer = $request->attributesCustomer;
+            $orders = $this->order->with('customer:id,' . $attributesCustomer);
+        } else {
+            $orders = $this->order->with('customer');
+        }
+
+        if ($request->has('filter')) {
+            $filters = explode(';', $request->filter);
+
+
+            foreach ($filters as $key => $condicao) {
+                $c = explode(':', $condicao);
+                $orders = $orders->where($c[0], $c[1], $c[2]);
+            }
+        }
 
 
         if ($request->has('attributes')) {
             $attributes = explode(',', $request->get('attributes'));
-            $attributesCustomer = $request->attributesCustomer;
-            $order = $this->order->select($attributes)->with('customer:id,' . $attributesCustomer)->get();
+            $orders = $orders->select($attributes)->get();
         } else {
-            $order = $this->order->with('customer')->get();
+            $orders = $orders->get();
         }
-        return $order;
+        return $orders;
     }
 
     /**

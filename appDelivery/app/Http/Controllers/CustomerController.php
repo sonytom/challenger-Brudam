@@ -26,13 +26,39 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
+
         $customers = array();
+
+        if ($request->has('attributesOrder')) {
+            $attributesOrder = $request->attributesOrder;
+            $customers = $this->customer->with('order:id,' . $attributesOrder);
+        } else {
+            $customers = $this->customer->with('order');
+        }
+
+        if ($request->has('filter')) {
+            $filters = explode(';', $request->filter);
+
+
+            foreach ($filters as $key => $condicao) {
+                $c = explode(':', $condicao);
+                $customers = $customers->where($c[0], $c[1], $c[2]);
+            }
+        }
 
         if ($request->has('attributes')) {
             $attributes = explode(',', $request->get('attributes'));
-            $customer = $this->customer->select($attributes)->get();
+            $customers = $customers->select($attributes)->get();
+        } else {
+            $customers = $customers->get();
         }
-        return $customer;
+
+        return $customers;
+        
+
+        //return response()->json($this->customer->with('order')->get(), 200);
+        //all() obj + get Collection
+        //get() modificar a consulta -> Collection
     }
 
     /**
@@ -112,9 +138,9 @@ class CustomerController extends Controller
         $imgName = $image->store('path', 'public');
 
         //Add dados vindo da Request in customer
-        $customer->fill($request->All());
-        $customer->image = $imgName;
-
+        $customer ->fill($request->All());
+        $customer -> image = $imgName;
+        
         //Update and Save ID
         $customer->save();
 
