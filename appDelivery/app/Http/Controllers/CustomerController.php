@@ -25,8 +25,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = $this->customer->all();
-        return response()->json($customers, 200);
+        //$customers = $this->customer->all();
+        return response()->json($this->customer->with('order')->get(), 200);
+        //all() obj + get Collection
+        //get() modificar a consulta -> Collection
     }
 
     /**
