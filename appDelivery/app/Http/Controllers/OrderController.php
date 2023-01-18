@@ -24,8 +24,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = $this->order->all();
-        return $orders;
+        return $this->order->with('customer')->get();
     }
 
     /**
@@ -39,7 +38,7 @@ class OrderController extends Controller
         $request->validate($this->order->rules(null));
 
         $order = $this->order->create([
-            'customer_id' => $request->customer_id,
+            'customer_id' => $request->customers_id,
             'dateDelivery' => $request->dateDelivery,
             'taxSend' => $request->taxSend,
             'fragile' => $request->fragile
