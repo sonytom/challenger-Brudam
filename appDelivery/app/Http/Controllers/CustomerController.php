@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -23,12 +24,15 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      * All registers
      */
-    public function index()
+    public function index(Request $request)
     {
-        //$customers = $this->customer->all();
-        return response()->json($this->customer->with('order')->get(), 200);
-        //all() obj + get Collection
-        //get() modificar a consulta -> Collection
+        $customers = array();
+
+        if ($request->has('attributes')) {
+            $attributes = explode(',', $request->get('attributes'));
+            $customer = $this->customer->select($attributes)->get();
+        }
+        return $customer;
     }
 
     /**
@@ -107,11 +111,12 @@ class CustomerController extends Controller
         $image = $request->file('image');
         $imgName = $image->store('path', 'public');
 
-        $customer->update([
-            'name' => $request->name,
-            'image' => $imgName,
-            'address' => $request->address
-        ]);
+        //Add dados vindo da Request in customer
+        $customer->fill($request->All());
+        $customer->image = $imgName;
+
+        //Update and Save ID
+        $customer->save();
 
         return response()->json($customer, 200);
     }
