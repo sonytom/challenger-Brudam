@@ -32,4 +32,8 @@ class Customer extends Model
             'name.min' => 'minimum three characters'
         ];
     }
+
+    public function order (){
+        return $this->hasMany('App\Models\Order');
+    }
 }

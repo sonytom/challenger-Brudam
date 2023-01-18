@@ -60,7 +60,7 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $customer = $this->customer->find($id);
+        $customer = $this->customer->with('order')->find($id);
         if ($customer === null) {
             return response()->json(['erro' => 'Não existe'], 404);
         }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ['customers_id', 'dateDelivery', 'taxSend','fragile'];
+    protected $fillable = ['customer_id', 'dateDelivery', 'taxSend','fragile'];
 
     public function rules($id)
     {
@@ -21,6 +21,10 @@ class Order extends Model
             'taxSend' => 'required|numeric',
             'fragile' => 'required|digits_between:1,3'
         ];
+    }
+
+    public function customer(){
+        return $this -> belongsTo('App\Models\Customer');
     }
 
 }

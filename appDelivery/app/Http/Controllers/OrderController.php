@@ -39,7 +39,7 @@ class OrderController extends Controller
         $request->validate($this->order->rules(null));
 
         $order = $this->order->create([
-            'customers_id' => $request->customers_id,
+            'customer_id' => $request->customer_id,
             'dateDelivery' => $request->dateDelivery,
             'taxSend' => $request->taxSend,
             'fragile' => $request->fragile
@@ -56,7 +56,10 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = $this->order->find($id);
+
+        $order = $this->order->with('customer')->find($id);
+
+        //dd($order);
         if ($order === null) {
             return response()->json(['erro' => 'Não existe'], 404);
         }
