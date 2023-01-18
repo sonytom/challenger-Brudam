@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+    protected $fillable = ['customers_id', 'dateDelivery', 'taxSend','fragile'];
+
+    public function rules($id)
+    {
+        $id = $id === null ? 'null' : $id;
+        
+        return [
+            'customers_id' => "exists:customers,id",
+            'dateDelivery' => 'required',
+            //validation float does not exist 
+            'taxSend' => 'required|numeric',
+            'fragile' => 'required|digits_between:1,3'
+        ];
+    }
+
 }
