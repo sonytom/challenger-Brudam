@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -22,9 +23,19 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->order->with('customer')->get();
+        $order = array();
+
+
+        if ($request->has('attributes')) {
+            $attributes = explode(',', $request->get('attributes'));
+            $attributesCustomer = $request->attributesCustomer;
+            $order = $this->order->select($attributes)->with('customer:id,' . $attributesCustomer)->get();
+        } else {
+            $order = $this->order->with('customer')->get();
+        }
+        return $order;
     }
 
     /**
@@ -55,10 +66,8 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-
         $order = $this->order->with('customer')->find($id);
 
-        //dd($order);
         if ($order === null) {
             return response()->json(['erro' => 'Não existe'], 404);
         }
@@ -94,13 +103,8 @@ class OrderController extends Controller
             $request->validate($this->order->rules($id));
         }
 
-
-        $order->update([
-            'customers_id' => $request->customers_id,
-            'dateDelivery' => $request->dateDelivery,
-            'taxSend' => $request->taxSend,
-            'fragile' => $request->fragile
-        ]);
+        $order->fill($request->All());
+        $order->save();
 
         return response()->json($order, 200);
     }
