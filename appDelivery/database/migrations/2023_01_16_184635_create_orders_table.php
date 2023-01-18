@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customers_id');
             $table->string('dateDelivery', 30);
-            $table->string('imagem', 100);
             $table->integer('taxSend');
             $table->integer('fragile');
             $table->timestamps();
