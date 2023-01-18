@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Repositories\OrderRepository;
 
 class OrderController extends Controller
 {
@@ -25,33 +26,25 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $orders = array();
+        $orderRepository = new OrderRepository($this->order);
 
         if ($request->has('attributesCustomer')) {
-            $attributesCustomer = $request->attributesCustomer;
-            $orders = $this->order->with('customer:id,' . $attributesCustomer);
+            $attributesCustomer = 'customer:id,'.$request->attributesCustomer;
+            $orderRepository -> selectAtributtesRegistersRelationship($attributesCustomer);
         } else {
-            $orders = $this->order->with('customer');
+            $orderRepository -> selectAtributtesRegistersRelationship('customer');
         }
 
         if ($request->has('filter')) {
-            $filters = explode(';', $request->filter);
-
-
-            foreach ($filters as $key => $condicao) {
-                $c = explode(':', $condicao);
-                $orders = $orders->where($c[0], $c[1], $c[2]);
-            }
+           $orderRepository -> filter(request('filter'));
         }
-
 
         if ($request->has('attributes')) {
             $attributes = explode(',', $request->get('attributes'));
-            $orders = $orders->select($attributes)->get();
-        } else {
-            $orders = $orders->get();
-        }
-        return $orders;
+            $orderRepository-> selectAttributes($attributes);
+        } 
+
+        return response() -> json($orderRepository -> getResult(),200);
     }
 
     /**
