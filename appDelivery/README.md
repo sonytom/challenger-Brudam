@@ -31,5 +31,5 @@ Prontinho !!
 Agora so pegar qualquer Curl que precisar aqui :
 https://elements.getpostman.com/redirect?entityId=19716956-d628b6b7-b8aa-4daa-900b-9fc9bc1cb791&entityType=collection
 
-
+Em Atualização "http://localhost:8000/api/documentation#/Customer" 
 
