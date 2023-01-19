@@ -1,0 +1,111 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "L5 OpenApi",
+        "description": "L5 Swagger OpenApi description",
+        "contact": {
+            "email": "darius@matulionis.lt"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Home page",
+                "responses": {
+                    "default": {
+                        "description": "Welcome page"
+                    }
+                }
+            }
+        },
+        "/api/customer": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Pesquisar todos os clientes",
+                "description": "Display a listing of the resource.",
+                "operationId": "36d5a836e102529237aae81bf088183a",
+                "responses": {
+                    "200": {
+                        "description": "Mostrar todas os Clientes com pesquisa personalizada"
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Cadastra Clientes",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "e788a12c4fbd7937feab964d2e133089",
+                "responses": {
+                    "200": {
+                        "description": "Cadastra Clientes"
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Deleta Clientes",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "4465ad7288b19b34f66c3ac80c9bf2c7",
+                "responses": {
+                    "200": {
+                        "description": "Deleta Clientes"
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        },
+        "/api/customer/{id}": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Busca Apenas um cliente",
+                "description": "Display the specified resource.",
+                "operationId": "c16111a7a260ae40ab1aff51e82bca5f",
+                "responses": {
+                    "200": {
+                        "description": "Busca Apenas um cliente"
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Atualiza Clientes",
+                "description": "Update the specified resource in storage.",
+                "operationId": "ff8700c6c2114949629c9c7b40b56fa9",
+                "responses": {
+                    "200": {
+                        "description": "Atualiza Clientes"
+                    },
+                    "default": {
+                        "description": "Ha ocurrido un error."
+                    }
+                }
+            }
+        }
+    }
+}

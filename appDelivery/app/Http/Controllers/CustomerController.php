@@ -24,6 +24,20 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      * All registers
+     * 
+     *  * @OA\Get(
+     *     path="/api/customer",
+     *     tags={"Customer"},
+     *     summary="Pesquisar todos os clientes",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Mostrar todas os Clientes com pesquisa personalizada"
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * ) 
      */
     public function index(Request $request)
     {
@@ -31,24 +45,24 @@ class CustomerController extends Controller
         $customerRepository = new CustomerRepository($this->customer);
 
         if ($request->has('attributesOrder')) {
-            $attributesOrder = 'order:id,'.$request->attributesOrder;
-            $customerRepository -> selectAtributtesRegistersRelationship($attributesOrder);
+            $attributesOrder = 'order:id,' . $request->attributesOrder;
+            $customerRepository->selectAtributtesRegistersRelationship($attributesOrder);
         } else {
-            $customerRepository -> selectAtributtesRegistersRelationship('order');
+            $customerRepository->selectAtributtesRegistersRelationship('order');
         }
 
         if ($request->has('filter')) {
-           $customerRepository -> filter(request('filter'));
+            $customerRepository->filter(request('filter'));
         }
 
 
         if ($request->has('attributes')) {
             $attributes = explode(',', $request->get('attributes'));
-            $customerRepository-> selectAttributes($attributes);
-        } 
+            $customerRepository->selectAttributes($attributes);
+        }
 
-        return response() -> json($customerRepository -> getResult(),200);
-        
+        return response()->json($customerRepository->getResult(), 200);
+
         // //return response()->json($this->customer->with('order')->get(), 200);
         // //all() obj + get Collection
         // //get() modificar a consulta -> Collection
@@ -59,6 +73,19 @@ class CustomerController extends Controller
      *
      * @param  \App\Http\Requests\StoreCustomerRequest  $request
      * @return \Illuminate\Http\Response
+     *@OA\Post(
+     *     path="/api/customer",
+     *     tags={"Customer"},
+     *     summary="Cadastra Clientes",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cadastra Clientes"
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * ) 
      */
     public function store(StoreCustomerRequest $request)
     {
@@ -82,6 +109,20 @@ class CustomerController extends Controller
      *
      * @param  Integer
      * @return \Illuminate\Http\Response
+     * 
+     *  * @OA\Get(
+     *     path="/api/customer/{id}",
+     *     tags={"Customer"},
+     *     summary="Busca Apenas um cliente",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Busca Apenas um cliente"
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * ) 
      */
     public function show($id)
     {
@@ -99,6 +140,19 @@ class CustomerController extends Controller
      * @param  \App\Http\Requests\UpdateCustomerRequest  $request
      * @param  \App\Models\id  $ID
      * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/api/customer/{id}",
+     *     tags={"Customer"},
+     *     summary="Atualiza Clientes",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Atualiza Clientes"
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * ) 
      */
     public function update(UpdateCustomerRequest $request, $id)
     {
@@ -145,6 +199,19 @@ class CustomerController extends Controller
      *
      * @param  \App\Models\id $id
      * @return \Illuminate\Http\Response
+     *@OA\Delete(
+     *     path="/api/customer",
+     *     tags={"Customer"},
+     *     summary="Deleta Clientes",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Deleta Clientes"
+     *     ),
+     *     @OA\Response(
+     *         response="default",
+     *         description="Ha ocurrido un error."
+     *     )
+     * ) 
      */
     public function destroy($id)
     {
