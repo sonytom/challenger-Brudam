@@ -23,3 +23,13 @@ docker pull postgres
 
 docker run -p 5432:5432 -e POSTGRES_PASSWORD=1234 postgres
 
+php artisan migrate
+
+php artisan serve
+
+Prontinho !! 
+Agora so pegar qualquer Curl que precisar aqui :
+https://elements.getpostman.com/redirect?entityId=19716956-d628b6b7-b8aa-4daa-900b-9fc9bc1cb791&entityType=collection
+
+
+
